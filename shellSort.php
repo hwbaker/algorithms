@@ -8,7 +8,7 @@
  */
 
 /**
- * @desc 插入排序-for
+ * @desc 插入排序-while
  * @param $arr 数组
  * @param $d   偏移量
  */
@@ -29,14 +29,14 @@ function shellInsertSortWhile(&$arr, $d)
 }
 
 /**
- * @desc 插入排序-while
+ * @desc 插入排序-for
  * @param $arr 数组
  * @param $d   偏移量
  */
 function shellInsertSortFor(&$arr, $d)
 {
     $n = count($arr);
-    echo 'n:'.$n . ';d:' . $d . "\n\r";
+    echo 'n:'.$n . ';d:' . $d . "\r\n";
     for ($i = $d; $i < $n; $i++) {
         $element = $arr[$i];
         for ($j = $i; $j >= $d && $arr[$j-$d] > $element; $j -= $d) {
@@ -46,37 +46,55 @@ function shellInsertSortFor(&$arr, $d)
     }
 }
 
-echo "<pre>";
-$arr = generateRandomArray(10, 1, 500);
-$n = count($arr);
-echo 'before:' . print_r($arr, true);
+/**
+ * @desc SHELL排序,偏移量$size
+ * @param array $arr
+ * @param $size
+ */
+function shellSortOffSet(array $arr, $size)
+{
+    $n = count($arr);
+    $d = 1;
+    while ($d < $n/$size) {
+        $d = $size * $d + 1;
+    }
 
-//$h = $n/3;
-//while ($h > 0) {
-//    echo $h . ":\r\n";
-//    //计算increment sequence:1,4,13,40,121,364,1093...
-//    $h = 3 * $h + 1;
-//    while ($h >= 1) {
-//        echo $h . ';';
-//        for ($i = $h; $i < $n; $i++) {
-//            $element = $arr[$i];
-//            for ($j = $i; $j >= $h && $arr[$j-$h] > $element ; $j -= $h) {
-//                $arr[$j] = $arr[$j-$h];
-//            }
-//            $arr[$j] = $element;
-//        }
-//        $h = floor($h/3);
-//        echo 'h/3:'.$h ."\r\n" ;
-//    }
-//}
-
-$d = floor($n/2);
-while ($d > 0) {
-    shellInsertSortFor($arr, $d);
-    $d = floor( $d /= 2);
+    while ($d >= 1) {
+        echo $d . ":\r\n";
+        //计算increment sequence:1,4,13,40,121,364,1093...
+        for ($i = $d; $i < $n; $i++) {
+            $element = $arr[$i];
+            for ($j = $i; $j >= $d && $arr[$j-$d] > $element ; $j -= $d) {
+                $arr[$j] = $arr[$j-$d];
+            }
+            $arr[$j] = $element;
+        }
+        $d = ($d-1) / $size;
+        echo 'h/3:'.$d ."\r\n" ;
+    }
 }
 
-echo 'after:' . print_r($arr, true);
+// /usr/local/bin/php /users/hewei/site/git/algorithms/shellSort.php
+$size = 2;
+$arr = generateRandomArray(600, 1, 500);
+$n = count($arr);
+$d = 1;
+while ($d < $n/$size) {
+    $d = $size * $d + 1;
+}
+echo 'before:' . implode(',', $arr) . "\r\n";
+$time1 = time();
+while ($d >= 1) {
+    shellInsertSortFor($arr, $d);
+    $d =  ($d-1) / $size;
+}
+$time2 = time();
+$diffSecond = $time2 - $time1;
+$diff = $diffSecond/3600;
+echo 'after:' . implode(',', $arr) . "\r\n";
+echo date('Y-m-d H:i:s',$time1) . "\r\n";
+echo date('Y-m-d H:i:s',$time2)  . "\r\n";
+echo $diffSecond;
 
 /**
  * @desc 随机生成算法测试用例,生成n个元素的随机数,每个元素的随机范围是[rangeL,rangeR]
@@ -98,7 +116,10 @@ function generateRandomArray($n, $rangeL, $rangeR)
     return $result;
 }
 
-
+/**
+ * @desc 网上搜索的方法
+ * @param $arr
+ */
 function shellSort(&$arr)
 {
     $n = count($arr);
