@@ -75,25 +75,23 @@ function shellSortOffSet(array $arr, $size)
 }
 
 // /usr/local/bin/php /users/hewei/site/git/algorithms/shellSort.php
-$size = 2;
-$arr = generateRandomArray(600, 1, 500);
+$size = 3;
+$arr = generateRandomArray(1000, 1, 1000);
 $n = count($arr);
 $d = 1;
 while ($d < $n/$size) {
     $d = $size * $d + 1;
 }
-echo 'before:' . implode(',', $arr) . "\r\n";
-$time1 = time();
+$time1= getMillisecond();
+//echo 'before:' . implode(',', $arr) . "\r\n";
 while ($d >= 1) {
     shellInsertSortFor($arr, $d);
     $d =  ($d-1) / $size;
 }
-$time2 = time();
+$time2= getMillisecond();
 $diffSecond = $time2 - $time1;
 $diff = $diffSecond/3600;
-echo 'after:' . implode(',', $arr) . "\r\n";
-echo date('Y-m-d H:i:s',$time1) . "\r\n";
-echo date('Y-m-d H:i:s',$time2)  . "\r\n";
+//echo 'after:' . implode(',', $arr) . "\r\n";
 echo $diffSecond;
 
 /**
@@ -135,4 +133,13 @@ function shellSort(&$arr)
             }
         }
     }
+}
+
+/**
+ * @desc 获取毫秒级时间戳
+ * @return float
+ */
+function getMillisecond() {
+    list($t1, $t2) = explode(' ', microtime());
+    return (float)(floatval($t1)+floatval($t2))*1000;
 }
