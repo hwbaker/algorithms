@@ -5,14 +5,18 @@
  * User: hewei
  * Date: 17/1/5
  * Time: 下午5:27
+ *
+ * cd /users/hewei/site/git/algorithms
+ * /usr/local/bin/php shellSort.php num 200
  */
 
+require("common.php");
 /**
  * @desc 希尔排序-while形式
  * @param $arr  数组
  * @param $size 偏移量
  */
-function shellInsertSortWhile(&$arr, $size)
+function shellInsertSortWhile(array &$arr, $size)
 {
     $n = count($arr);
     $d = 1;
@@ -41,7 +45,7 @@ function shellInsertSortWhile(&$arr, $size)
  * @param $arr  数组
  * @param $size 偏移量
  */
-function shellInsertSortFor(&$arr, $size)
+function shellInsertSortFor(array &$arr, $size)
 {
     $n = count($arr);
     $d = 1;
@@ -63,43 +67,21 @@ function shellInsertSortFor(&$arr, $size)
     }
 }
 
-// /usr/local/bin/php /users/hewei/site/git/algorithms/shellSort.php
-$size = 3;
-$arr = generateRandomArray(10, 1, 100);
-$time1 = getMillisecond();
+$common = new common;
+$num = isset($argv[1]) && $argv[1] == 'num' && isset($argv[2]) ? $argv[2] : 10; // 数组大小
+$size = 3; //偏移量
+$arr = $common->generateRandomArray($num, 1, 500);
 echo 'before:' . implode(',', $arr) . "\r\n";
+$timeSta = $common->getMillisecond();
 shellInsertSortFor($arr, $size);
-$time2 = getMillisecond();
-$diffSecond = $time2 - $time1;
-$diff = $diffSecond/3600;
+echo $common->timeDiff($timeSta);
 echo 'after:' . implode(',', $arr) . "\r\n";
-echo $diffSecond;
-
-/**
- * @desc 随机生成算法测试用例,生成n个元素的随机数,每个元素的随机范围是[rangeL,rangeR]
- * @param $n
- * @param $rangeL
- * @param $rangeR
- * @return array
- */
-function generateRandomArray($n, $rangeL, $rangeR)
-{
-    $count = 0;
-    $result = array();
-    while ($count < $n) {
-        $result[] = mt_rand($rangeL, $rangeR);
-        $result = array_flip(array_flip($result));
-        $count = count($result);
-    }
-    shuffle($result);
-    return $result;
-}
 
 /**
  * @desc 网上搜索的方法
  * @param $arr
  */
-function shellSort(&$arr)
+function shellSort(array &$arr)
 {
     $n = count($arr);
     for($gap = floor($n/2); $gap > 0; $gap = floor($gap /= 2))
@@ -114,13 +96,4 @@ function shellSort(&$arr)
             }
         }
     }
-}
-
-/**
- * @desc 获取毫秒级时间戳
- * @return float
- */
-function getMillisecond() {
-    list($t1, $t2) = explode(' ', microtime());
-    return (float)(floatval($t1)+floatval($t2))*1000;
 }
