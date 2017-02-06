@@ -8,90 +8,71 @@
  */
 
 /**
- * @desc 插入排序-while
- * @param $arr 数组
- * @param $d   偏移量
+ * @desc 希尔排序-while形式
+ * @param $arr  数组
+ * @param $size 偏移量
  */
-function shellInsertSortWhile(&$arr, $d)
-{
-    $n = count($arr);
-    echo 'n:'.$n . ';d:' . $d . "\n\r";
-    for ($i = $d; $i < $n; $i++) {
-       $element = $arr[$i];
-        $j = $i - $d;
-        echo 'element:'.$element.';arr[j]:'.$arr[$j].';i:'.$i . ';j:' . $j . "\n\r";
-        while ($j >= 0 && $arr[$j] > $element) {
-            $arr[$j+$d] = $arr[$j];
-            $j -= $d;
-        }
-        $arr[$j+$d] = $element;
-    }
-}
-
-/**
- * @desc 插入排序-for
- * @param $arr 数组
- * @param $d   偏移量
- */
-function shellInsertSortFor(&$arr, $d)
-{
-    $n = count($arr);
-    echo 'n:'.$n . ';d:' . $d . "\r\n";
-    for ($i = $d; $i < $n; $i++) {
-        $element = $arr[$i];
-        for ($j = $i; $j >= $d && $arr[$j-$d] > $element; $j -= $d) {
-            $arr[$j] = $arr[$j-$d];
-        }
-        $arr[$j] = $element;
-    }
-}
-
-/**
- * @desc SHELL排序,偏移量$size
- * @param array $arr
- * @param $size
- */
-function shellSortOffSet(array $arr, $size)
+function shellInsertSortWhile(&$arr, $size)
 {
     $n = count($arr);
     $d = 1;
     while ($d < $n/$size) {
         $d = $size * $d + 1;
     }
-
+    echo 'n:'.$n . ';d:' . $d . "\r\n";
     while ($d >= 1) {
-        echo $d . ":\r\n";
         //计算increment sequence:1,4,13,40,121,364,1093...
         for ($i = $d; $i < $n; $i++) {
             $element = $arr[$i];
-            for ($j = $i; $j >= $d && $arr[$j-$d] > $element ; $j -= $d) {
+            $j = $i - $d;
+            echo 'element:'.$element.';arr[j]:'.$arr[$j].';i:'.$i . ';j:' . $j . "\r\n";
+            while ($j >= 0 && $arr[$j] > $element) {
+                $arr[$j+$d] = $arr[$j];
+                $j -= $d;
+            }
+            $arr[$j+$d] = $element;
+        }
+        $d =  ($d-1) / $size;
+    }
+}
+
+/**
+ * @desc shell排序-for形式
+ * @param $arr  数组
+ * @param $size 偏移量
+ */
+function shellInsertSortFor(&$arr, $size)
+{
+    $n = count($arr);
+    $d = 1;
+    while ($d < $n/$size) {
+        $d = $size * $d + 1;
+    }
+    echo 'n:'.$n . ';d:' . $d . "\r\n";
+    while ($d >= 1) {
+        //计算increment sequence:1,4,13,40,121,364,1093...
+        for ($i = $d; $i < $n; $i++) {
+            $element = $arr[$i];
+            echo 'element:'.$element.';i:'.$i . "\r\n";
+            for ($j = $i; $j >= $d && $arr[$j-$d] > $element; $j -= $d) {
                 $arr[$j] = $arr[$j-$d];
             }
             $arr[$j] = $element;
         }
-        $d = ($d-1) / $size;
-        echo 'h/3:'.$d ."\r\n" ;
+        $d =  ($d-1) / $size;
     }
 }
 
 // /usr/local/bin/php /users/hewei/site/git/algorithms/shellSort.php
 $size = 3;
-$arr = generateRandomArray(1000, 1, 1000);
-$n = count($arr);
-$d = 1;
-while ($d < $n/$size) {
-    $d = $size * $d + 1;
-}
-$time1= getMillisecond();
-//echo 'before:' . implode(',', $arr) . "\r\n";
-while ($d >= 1) {
-    shellInsertSortFor($arr, $d);
-    $d =  ($d-1) / $size;
-}
-$time2= getMillisecond();
+$arr = generateRandomArray(10, 1, 100);
+$time1 = getMillisecond();
+echo 'before:' . implode(',', $arr) . "\r\n";
+shellInsertSortFor($arr, $size);
+$time2 = getMillisecond();
 $diffSecond = $time2 - $time1;
 $diff = $diffSecond/3600;
-//echo 'after:' . implode(',', $arr) . "\r\n";
+echo 'after:' . implode(',', $arr) . "\r\n";
 echo $diffSecond;
 
 /**
