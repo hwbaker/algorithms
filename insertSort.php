@@ -1,6 +1,6 @@
 <?php
 /**
- * @desc 选择排序
+ * @desc 插入排序算法,其增强版算法为希尔排序
  * Created by PhpStorm.
  * User: hewei
  * Date: 17/1/4
