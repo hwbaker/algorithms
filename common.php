@@ -9,6 +9,12 @@
  */
 class common
 {
+    //初始化时间
+//    public static $startTime = '';
+//    public function _construct()
+//    {
+//        self::$startTime = microtime();
+//    }
     /**
      * @desc 随机生成算法测试用例,生成n个元素的随机数,每个元素的随机范围是[rangeL,rangeR]
      * @param $n
