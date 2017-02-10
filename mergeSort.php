@@ -1,6 +1,6 @@
 <?php
 /**
- * @desc 归并排序 Olog(N)算法
+ * @desc 归并排序 O*Nlog(N)算法
  * Created by PhpStorm.
  * User: hewei
  * Date: 17/1/6
@@ -20,7 +20,7 @@ function mergeSort(array &$arr)
 }
 
 /**
- * @desc 递归使用归并排序,对arr[l...r]的范围进行排序
+ * @desc 递归使用归并排序,对arr[l...r]的范围进行排序.l和r前闭后闭
  * @param array $arr
  * @param $l
  * @param $r
@@ -28,16 +28,29 @@ function mergeSort(array &$arr)
  */
 function mergeSortDetail(array &$arr, $l, $r)
 {
-    // 若l<r,则当前处理元素至少有两个;若l>=r,则当前处理元素只有一个或一个也没有,直接返回不做任何操作
-    if ($l >= $r) {
-       return false;
+    // 递归出口:对递归到底的情况进行处理
+    // 若l<r,则当前处理元素至少有两个;若l>=r,则当前处理元素只有一个或一个也没有,直接返回不做任何操作.
+    // 当l和r差距非常小的时候,改用插入排序,屏蔽以下代码.
+//    if ($l >= $r) {
+//       return false;
+//    }
+
+    // 归并排序优化二:当l和r非常小的时候,改用插入排序.具体实现如下:
+    if ($r - $l <= 2) {
+        // 插入排序:真对l和r区间
+        insertSortRange($arr, $l, $r);
+        return false;
     }
+
 
     // 二分查找算法,当l和r特别大,有可能发生溢出错误
     $mid = floor(($l + $r)/2);
     mergeSortDetail($arr, $l, $mid);
     mergeSortDetail($arr, $mid + 1, $r);
-    mergeDetail($arr, $l, $mid, $r);
+    // 归并算法优化一:当第mid比mid+1个元素大的时候,才进行归并
+    if ($arr[$mid] > $arr[$mid + 1]) {
+        sortDetail($arr, $l, $mid, $r);
+    }
 }
 
 /**
@@ -47,7 +60,7 @@ function mergeSortDetail(array &$arr, $l, $r)
  * @param $mid
  * @param $r
  */
-function mergeDetail(array &$arr, $l, $mid, $r)
+function sortDetail(array &$arr, $l, $mid, $r)
 {
     // aux[r-l+1];
     for ($i = $l; $i <= $r; $i++) {
@@ -71,6 +84,23 @@ function mergeDetail(array &$arr, $l, $mid, $r)
         }
     }
     unset($aux);
+}
+
+/**
+ * @desc 对arr[l...r]范围的数组进行插入排序
+ * @param array $arr
+ * @param $l
+ * @param $r
+ */
+function insertSortRange (array &$arr, $l, $r)
+{
+    for ($i = $l + 1; $i <= $r; $i++) {
+        $element  = $arr[$i];
+        for ($j = $i; $j > $l && $arr[$j - 1] > $element; $j--) {
+            $arr[$j] = $arr[$j - 1];
+        }
+        $arr[$j] = $element;
+    }
 }
 
 /**
