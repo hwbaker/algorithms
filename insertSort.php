@@ -1,6 +1,6 @@
 <?php
 /**
- * @desc 插入排序算法,其增强版算法为希尔排序
+ * @desc 插入排序算法,其增强版算法为希尔排序.对近乎有序数组排序,算法效率近乎O(N)
  * Created by PhpStorm.
  * User: hewei
  * Date: 17/1/4
@@ -18,6 +18,7 @@ require("common.php");
 function insertSortComplex(array &$arr)
 {
     $n = count($arr);
+    // 假设第一个元素有序,因此外层循环从i=1开始
     for ($i = 1; $i < $n; $i++) {
         echo 'i:' . $i . ';';
 //        for ($j = $i; $j > 0; $j--) {
@@ -49,6 +50,7 @@ function insertSortComplex(array &$arr)
 function insertSortAdv(array &$arr)
 {
     $n = count($arr);
+    // 假设第一个元素有序,因此外层循环从i=1开始
     for ($i = 1; $i < $n; $i++) {
         // 寻找arr[i]元素合适的位置
         $element = $arr[$i];
