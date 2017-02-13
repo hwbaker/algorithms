@@ -9,6 +9,8 @@
 
 require("common.php");
 /**
+ * 该算法来自算法导论,叫作Nico Lomuto方法,使用最经典的单方向一次遍历找到中值。
+ * 但这种算法在最坏情况下(例如值相同的数组,需要n-1次划分,每一次划分需要O(n) 时间去掉一个元素)最坏情况下为O(n*n)
  * @param $arr
  */
 function quickSort(&$arr)
@@ -27,7 +29,7 @@ function quickSort(&$arr)
 function quickSortDetail(&$arr, $l, $r)
 {
     if ($l >= $r) {
-        echo 'l>r=>'."{$l}:{$r}\r\n";
+        echo 'l>=r => '."{$l}:{$r}\r\n";
         return false;
     }
     echo 'quickSortDetail(l,r):quickSortDetail('.$l.','.$r.")\r\n";
@@ -48,6 +50,15 @@ function quickSortDetail(&$arr, $l, $r)
 function partition (&$arr, $l, $r)
 {
     echo "partitionStart....\r\n";
+    // 随机化快速排序算法-sta,快速排序算法的升级
+    srand(time(0)); // 设置种子,并生成伪随机序列
+    $randI = $l + rand() % ($r - $l + 1); // [r...l]之间产生随机数randI
+
+    $randTemp = $arr[$l]; // 将l和randI数据交换
+    $arr[$l] = $arr[$randI];
+    $arr[$randI] = $randTemp;
+    // 随机快速排序算法-end
+
     $v = $arr[$l];
     $j = $l; // arr[l+1...j] < v ; arr[j+1...i) > v
     echo 'l:' . $l .';r:' . $r . "\r\n";
@@ -116,7 +127,7 @@ function sortWeb(array &$arr)
 $common = new common();
 $num = isset($argv[1]) && $argv[1] == 'num' && isset($argv[2]) ? $argv[2] : 10; //数组大小
 $arr = $common->generateRandomArray($num, 1, 2000);
-$arr = array(4,3,2,1);
+//$arr = array(4,3,2,1);
 echo 'before:' . implode(',', $arr) . "\r\n";
 $timeSta = $common->getMillisecond();
 quickSort($arr);
