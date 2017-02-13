@@ -32,11 +32,12 @@ function mergeSortDetail(array &$arr, $l, $r)
     // 若l<r,则当前处理元素至少有两个;若l>=r,则当前处理元素只有一个或一个也没有,直接返回不做任何操作.
     // 当l和r差距非常小的时候,改用插入排序,屏蔽以下代码.
 //    if ($l >= $r) {
-//       return false;
+//        echo 'l>r => '."{$l}:{$r}\r\n";
+//        return false;
 //    }
 
     // 归并排序优化二:当l和r非常小的时候,改用插入排序.具体实现如下:
-    if ($r - $l <= 2) {
+    if ($r - $l <= 15) {
         // 插入排序:真对l和r区间
         insertSortRange($arr, $l, $r);
         return false;
@@ -45,8 +46,11 @@ function mergeSortDetail(array &$arr, $l, $r)
 
     // 二分查找算法,当l和r特别大,有可能发生溢出错误
     $mid = floor(($l + $r)/2);
+    echo 'l:'.$l.';r:'.$r.';mid:'.$mid."\r\n";
     mergeSortDetail($arr, $l, $mid);
+    echo 'mergeSortDetail(l,mid):mergeSortDetail('.$l.','.$mid.")\r\n";
     mergeSortDetail($arr, $mid + 1, $r);
+    echo 'mergeSortDetail(mid+1,r):mergeSortDetail('.($mid+1).','.$r.")\r\n";
     // 归并算法优化一:当第mid比mid+1个元素大的时候,才进行归并
     if ($arr[$mid] > $arr[$mid + 1]) {
         sortDetail($arr, $l, $mid, $r);
@@ -62,10 +66,13 @@ function mergeSortDetail(array &$arr, $l, $r)
  */
 function sortDetail(array &$arr, $l, $mid, $r)
 {
+    echo "sortDetailStart....\r\n";
+    echo 'l:'.$l.';r:'.$r.';mid:'.$mid."\r\n";
     // aux[r-l+1];
     for ($i = $l; $i <= $r; $i++) {
         $aux[$i-$l] = $arr[$i];
     }
+    echo 'aux:' . print_r($aux,true);
     $i = $l;
     $j = $mid + 1;
     for ($k = $l; $k <= $r; $k++) {
@@ -84,6 +91,8 @@ function sortDetail(array &$arr, $l, $mid, $r)
         }
     }
     unset($aux);
+    echo 'arr:' . print_r($arr,true);
+    echo "sortDetailEnd....\r\n";
 }
 
 /**
@@ -158,7 +167,7 @@ function Merge(array &$arr, $start, $mid, $end)
 $common = new common();
 $num = isset($argv[1]) && $argv[1] == 'num' && isset($argv[2]) ? $argv[2] : 10; //数组大小
 $arr = $common->generateRandomArray($num, 1, 2000);
-//$arr = array(1,40,2,36,3);
+$arr = array(40,36,11,2);
 echo 'before:' . implode(',', $arr) . "\r\n";
 $timeSta = $common->getMillisecond();
 mergeSort($arr);
