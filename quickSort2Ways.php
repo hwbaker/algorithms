@@ -26,8 +26,14 @@ function quickSort2Ways(&$arr)
  */
 function quickSortDetail(&$arr, $l, $r)
 {
-    if ($l >= $r) {
-        echo 'l>=r => '."{$l}:{$r}\r\n";
+//    if ($l >= $r) {
+//        echo 'l>=r => '."{$l}:{$r}\r\n";
+//        return false;
+//    }
+    // 优化:当l和r非常小的时候,改用插入排序.具体实现如下:
+    if ($r - $l <= 15) {
+        // 插入排序:真对l和r区间
+        insertSortRange($arr, $l, $r);
         return false;
     }
     echo 'quickSortDetail(l,r):quickSortDetail('.$l.','.$r.")\r\n";
