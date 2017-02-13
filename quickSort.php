@@ -6,6 +6,7 @@
  * Date: 17/2/10
  * Time: 上午10:08
  */
+
 require("common.php");
 /**
  * @param $arr
@@ -26,33 +27,50 @@ function quickSort(&$arr)
 function quickSortDetail(&$arr, $l, $r)
 {
     if ($l >= $r) {
+        echo 'l>r=>'."{$l}:{$r}\r\n";
         return false;
     }
-
+    echo 'quickSortDetail(l,r):quickSortDetail('.$l.','.$r.")\r\n";
     $p = partition($arr, $l, $r);
+    echo 'p:'.$p."\r\n";
     quickSortDetail($arr, $l, $p - 1);
+    echo 'partition(l,p-1):partition('.$l.','.($p - 1).")\r\n";
     quickSortDetail($arr, $p + 1, $r);
+    echo 'partition(p+1,r):partition('.($p+1).','.$r.")\r\n";
 }
 
+/**
+ * @param $arr
+ * @param $l
+ * @param $r
+ * @return mixed
+ */
 function partition (&$arr, $l, $r)
 {
+    echo "partitionStart....\r\n";
     $v = $arr[$l];
-
     $j = $l; // arr[l+1...j] < v ; arr[j+1...i) > v
+    echo 'l:' . $l .';r:' . $r . "\r\n";
     for( $i = $l + 1 ; $i <= $r ; $i ++ ) {
+        echo 'i:' . $i . "\r\n";
         if ($arr[$i] < $v) {
+            echo 'j:' . $j . "\r\n";
             $j++;
+            echo 'j++:' . $j . "\r\n";
 
             $tmp  = $arr[$i];
             $arr[$i] = $arr[$j];
             $arr[$j] = $tmp;
+            echo 'j<->i:'.print_r($arr,true);
         }
     }
+    echo 'j:' . $j . ';l:' . $l . ";" . print_r($arr,true);
 
     $tmp  = $arr[$j];
     $arr[$j] = $arr[$l];
     $arr[$l] = $tmp;
-
+    echo  'j<->l:' . print_r($arr, true);
+    echo "partitionEnd....\r\n";
     return $j;
 }
 
@@ -67,13 +85,41 @@ function partition (&$arr, $l, $r)
  * 递归出口:当数组元素个数变成1的时候,所以这就是递归的出口
  *
  */
+/**
+ * @desc 比较直观,但以大量的空间为代价,使用了效率较低的merge函数
+ * @param array $arr
+ * @return bool
+ */
+function sortWeb(array &$arr)
+{
+    $n = count($arr);
+    if ($n <= 1) {
+        return $arr;
+    }
+    $sta = $arr[0];
+    $leftArr = $rightArr = array();
+    for ($i = 1; $i < $n; $i++) {
+        echo 'i:' . $i ."\r\n";
+        if ($arr[$i] < $sta) {
+            $leftArr[] = $arr[$i];
+        } else {
+            $rightArr[] = $arr[$i];
+        }
+    }
+
+    $leftArr = sortWeb($leftArr);
+    $rightArr = sortWeb($rightArr);
+    $arr = array_merge($leftArr, array($sta), $rightArr);
+    return $arr;
+}
 
 $common = new common();
 $num = isset($argv[1]) && $argv[1] == 'num' && isset($argv[2]) ? $argv[2] : 10; //数组大小
 $arr = $common->generateRandomArray($num, 1, 2000);
-//$arr = array(1,40,2,36,3);
+$arr = array(4,3,2,1);
 echo 'before:' . implode(',', $arr) . "\r\n";
 $timeSta = $common->getMillisecond();
 quickSort($arr);
+//sortWeb($arr);
 echo 'after:' . implode(',', $arr) . "\r\n";
 echo  $common->timeDiff($timeSta);
