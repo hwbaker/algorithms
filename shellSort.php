@@ -42,8 +42,8 @@ function shellInsertSortWhile(array &$arr, $size)
 
 /**
  * @desc shell排序-for形式
- * @param $arr  数组
- * @param $size 偏移量
+ * @param array $arr
+ * @param $size
  */
 function shellInsertSortFor(array &$arr, $size)
 {
