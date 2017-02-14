@@ -8,7 +8,7 @@ require("common.php");
  * Time: 下午10:02
  * @param $arr
  */
-function quickSort3Ways(&$arr)
+function quickSort3Ways(array &$arr)
 {
     $n = count($arr);
     quickSortDetail($arr, 0, $n - 1);
@@ -23,7 +23,7 @@ function quickSort3Ways(&$arr)
  * @param $r
  * @return bool
  */
-function quickSortDetail(&$arr, $l, $r)
+function quickSortDetail(array &$arr, $l, $r)
 {
     if ($l >= $r) {
         echo 'l>=r => '."{$l}:{$r}\r\n";
@@ -31,17 +31,14 @@ function quickSortDetail(&$arr, $l, $r)
     }
 //    if ($r - $l <= 15) {
 //        // 插入排序:真对l和r区间
-//        insertSortRange($arr, $l, $r);
+//        common::insertSortRange($arr, $l, $r);
 //        return false;
 //    }
 
     // partition
     srand(time(0));
     $randI = $l + rand() % ($r-$l+1);
-    swap($arr, $l, $randI);
-    $randTemp = $arr[$l]; // 将l和randI数据交换
-    $arr[$l] = $arr[$randI];
-    $arr[$randI] = $randTemp;
+    common::swap($arr, $l, $randI); // 将l和randI位置元素交换
 
     $v = $arr[$l];
     $lt = $l; // arr[l+1...lt] < v
@@ -49,34 +46,22 @@ function quickSortDetail(&$arr, $l, $r)
     $i = $l +1 ; // arr[lt+1...i) == v
     while ($i < $gt) {
         if ($arr[$i] < $v) {
-            swap($arr, $i, $lt + 1);
+            common::swap($arr, $i, $lt + 1);
             $lt++;
             $i++;
         } else if ($arr[$i] > $v) {
-            swap($arr, $i, $gt - 1);
+            common::swap($arr, $i, $gt - 1);
             $gt--;
         } else { // arr[i] == v
             $i++;
         }
     }
-    swap( $arr , $l, $lt);
+    common::swap($arr, $l, $lt);
 
     quickSortDetail($arr, $l, $lt - 1);
     quickSortDetail($arr, $gt, $r);
 }
 
-/**
- * @desc 数组l,r位置交换
- * @param $arr
- * @param $l
- * @param $r
- */
-function swap(&$arr, $l, $r)
-{
-    $randTemp = $arr[$l]; // 将l和randI数据交换
-    $arr[$l] = $arr[$r];
-    $arr[$r] = $randTemp;
-}
 
 $common = new common();
 $num = isset($argv[1]) && $argv[1] == 'num' && isset($argv[2]) ? $argv[2] : 10; //数组大小
