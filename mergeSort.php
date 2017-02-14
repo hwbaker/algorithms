@@ -39,7 +39,7 @@ function mergeSortDetail(array &$arr, $l, $r)
     // 归并排序优化二:当l和r非常小的时候,改用插入排序.具体实现如下:
     if ($r - $l <= 15) {
         // 插入排序:真对l和r区间
-        insertSortRange($arr, $l, $r);
+        common::insertSortRange($arr, $l, $r);
         return false;
     }
 
@@ -93,23 +93,6 @@ function sortDetail(array &$arr, $l, $mid, $r)
     unset($aux);
     echo 'arr:' . print_r($arr,true);
     echo "sortDetailEnd....\r\n";
-}
-
-/**
- * @desc 对arr[l...r]范围的数组进行插入排序
- * @param array $arr
- * @param $l
- * @param $r
- */
-function insertSortRange (array &$arr, $l, $r)
-{
-    for ($i = $l + 1; $i <= $r; $i++) {
-        $element  = $arr[$i];
-        for ($j = $i; $j > $l && $arr[$j - 1] > $element; $j--) {
-            $arr[$j] = $arr[$j - 1];
-        }
-        $arr[$j] = $element;
-    }
 }
 
 /**
@@ -167,7 +150,7 @@ function Merge(array &$arr, $start, $mid, $end)
 $common = new common();
 $num = isset($argv[1]) && $argv[1] == 'num' && isset($argv[2]) ? $argv[2] : 10; //数组大小
 $arr = $common->generateRandomArray($num, 1, 2000);
-$arr = array(40,36,11,2);
+//$arr = array(40,36,11,2);
 echo 'before:' . implode(',', $arr) . "\r\n";
 $timeSta = $common->getMillisecond();
 mergeSort($arr);
