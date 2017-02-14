@@ -55,4 +55,34 @@ class common
         $timeEnd = $timeEnd ? $timeEnd : self::getMillisecond();
         echo $timeEnd - $timeSta . "MicSec...\r\n";
     }
+
+    /**
+     * @desc 对arr[l...r]范围的数组进行插入排序
+     * @param array $arr
+     * @param $l
+     * @param $r
+     */
+    public static function insertSortRange (array &$arr, $l, $r)
+    {
+        for ($i = $l + 1; $i <= $r; $i++) {
+            $element  = $arr[$i];
+            for ($j = $i; $j > $l && $arr[$j - 1] > $element; $j--) {
+                $arr[$j] = $arr[$j - 1];
+            }
+            $arr[$j] = $element;
+        }
+    }
+
+    /**
+     * @desc 数组l,r位置交换
+     * @param $arr
+     * @param $l
+     * @param $r
+     */
+    public static function swap(array &$arr, $l, $r)
+    {
+        $temp = $arr[$l]; // 将l和randI数据交换
+        $arr[$l] = $arr[$r];
+        $arr[$r] = $temp;
+    }
 }
