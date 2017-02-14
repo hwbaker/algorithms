@@ -11,7 +11,7 @@ require("common.php");
 /**
  * @param $arr
  */
-function quickSort2Ways(&$arr)
+function quickSort2Ways(array &$arr)
 {
     $n = count($arr);
     quickSortDetail($arr, 0, $n - 1);
@@ -24,7 +24,7 @@ function quickSort2Ways(&$arr)
  * @param $r
  * @return bool
  */
-function quickSortDetail(&$arr, $l, $r)
+function quickSortDetail(array &$arr, $l, $r)
 {
 //    if ($l >= $r) {
 //        echo 'l>=r => '."{$l}:{$r}\r\n";
@@ -33,7 +33,7 @@ function quickSortDetail(&$arr, $l, $r)
     // 优化:当l和r非常小的时候,改用插入排序.具体实现如下:
     if ($r - $l <= 15) {
         // 插入排序:真对l和r区间
-        insertSortRange($arr, $l, $r);
+        common::insertSortRange($arr, $l, $r);
         return false;
     }
     echo 'quickSortDetail(l,r):quickSortDetail('.$l.','.$r.")\r\n";
@@ -51,16 +51,13 @@ function quickSortDetail(&$arr, $l, $r)
  * @param $r
  * @return mixed
  */
-function partition (&$arr, $l, $r)
+function partition (array &$arr, $l, $r)
 {
     echo "partitionStart....\r\n";
     // 随机化快速排序算法-sta,快速排序算法的升级
     srand(time(0)); // 设置种子,并生成伪随机序列
     $randI = $l + rand() % ($r - $l + 1); // [r...l]之间产生随机数randI
-
-    $randTemp = $arr[$l]; // 将l和randI数据交换
-    $arr[$l] = $arr[$randI];
-    $arr[$randI] = $randTemp;
+    common::swap($arr, $l, $randI); // 将l和randI位置元素交换
     // 随机快速排序算法-end
 
     // arr[l+1...i) <= v; arr(j...r] >= v
@@ -78,17 +75,12 @@ function partition (&$arr, $l, $r)
             break;
         }
 
-        $tmp  = $arr[$i];
-        $arr[$i] = $arr[$j];
-        $arr[$j] = $tmp;
+        common::swap($arr, $i, $j);
 
         $i++;
         $j--;
     }
-
-    $tmp  = $arr[$l];
-    $arr[$l] = $arr[$j];
-    $arr[$j] = $tmp;
+    common::swap($arr, $l, $j);
 
     return $j;
 }
