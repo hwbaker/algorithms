@@ -13,7 +13,7 @@ require("common.php");
  * 但这种算法在最坏情况下(例如值相同的数组,需要n-1次划分,每一次划分需要O(n) 时间去掉一个元素)最坏情况下为O(n*n)
  * @param $arr
  */
-function quickSort(&$arr)
+function quickSort(array &$arr)
 {
     $n = count($arr);
     quickSortDetail($arr, 0, $n - 1);
@@ -26,7 +26,7 @@ function quickSort(&$arr)
  * @param $r
  * @return bool
  */
-function quickSortDetail(&$arr, $l, $r)
+function quickSortDetail(array &$arr, $l, $r)
 {
     if ($l >= $r) {
         echo 'l>=r => '."{$l}:{$r}\r\n";
@@ -47,16 +47,13 @@ function quickSortDetail(&$arr, $l, $r)
  * @param $r
  * @return mixed
  */
-function partition (&$arr, $l, $r)
+function partition (array &$arr, $l, $r)
 {
     echo "partitionStart....\r\n";
     // 随机化快速排序算法-sta,快速排序算法的升级
     srand(time(0)); // 设置种子,并生成伪随机序列
     $randI = $l + rand() % ($r - $l + 1); // [r...l]之间产生随机数randI
-
-    $randTemp = $arr[$l]; // 将l和randI数据交换
-    $arr[$l] = $arr[$randI];
-    $arr[$randI] = $randTemp;
+    common::swap($arr, $l, $randI); // 将$arr数组l和randI位置元素交换
     // 随机快速排序算法-end
 
     $v = $arr[$l];
@@ -69,6 +66,7 @@ function partition (&$arr, $l, $r)
             $j++;
             echo 'j++:' . $j . "\r\n";
 
+            common::swap($arr, $i, $j);
             $tmp  = $arr[$i];
             $arr[$i] = $arr[$j];
             $arr[$j] = $tmp;
@@ -77,9 +75,7 @@ function partition (&$arr, $l, $r)
     }
     echo 'j:' . $j . ';l:' . $l . ";" . print_r($arr,true);
 
-    $tmp  = $arr[$j];
-    $arr[$j] = $arr[$l];
-    $arr[$l] = $tmp;
+    common::swap($arr, $l, $j);
     echo  'j<->l:' . print_r($arr, true);
     echo "partitionEnd....\r\n";
     return $j;
