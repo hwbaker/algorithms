@@ -67,9 +67,6 @@ function partition (array &$arr, $l, $r)
             echo 'j++:' . $j . "\r\n";
 
             common::swap($arr, $i, $j);
-            $tmp  = $arr[$i];
-            $arr[$i] = $arr[$j];
-            $arr[$j] = $tmp;
             echo 'j<->i:'.print_r($arr,true);
         }
     }
