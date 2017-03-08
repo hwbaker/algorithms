@@ -13,6 +13,49 @@ class MaxHeap
 {
     private $data;
     private $count;
+    /**
+     * @desc 构造函数
+     * MaxHeap constructor.
+     */
+    public function __construct()
+    {
+        $this->data = array();
+        $this->count = 0;
+    }
+
+    /**
+     * @desc 析构函数
+     */
+    public function __destruct()
+    {
+        unset($this->data);
+    }
+
+    /**
+     * @desc 返回数组大小
+     * @return int
+     */
+    public function size()
+    {
+        return count($this->data);
+    }
+
+    /**
+     * @desc 判断数组是否为空
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return $this->size() == 0;
+    }
+
+    /**
+     * @desc 打印数组
+     */
+    public function printData()
+    {
+        echo 'printData:'.print_r($this->data, true) . "\r\n";
+    }
 
     /**
      * @desc 上浮
@@ -58,33 +101,6 @@ class MaxHeap
     }
 
     /**
-     * @desc 构造函数
-     * MaxHeap constructor.
-     */
-    public function __construct()
-    {
-        $this->data = array();
-        $this->count = 0;
-    }
-
-    /**
-     * 析构函数
-     */
-    public function __destruct()
-    {
-        unset($this->data);
-    }
-
-    public function size()
-    {
-        return count($this->data);
-    }
-
-    public function isEmpty(){
-        return $this->size() == 0;
-    }
-
-    /**
      * @desc 堆中插入元素,入队
      * @param $item
      */
@@ -109,17 +125,34 @@ class MaxHeap
     }
 
     /**
-     * @desc 打印数组
+     * @desc 给定一个数组,使数组的排列形成'堆形状'
+     * Heapify
+     * @param array $arr
      */
-    public function printData()
+    public function maxHeap(array &$arr)
     {
-        echo 'printData:'.print_r($this->data, true) . "\r\n";
+        $n = count($arr);
+        for ($i =0 ; $i < $n; $i++) {
+            $this->data[$i + 1] = $arr[$i];
+        }
+
+        // 找寻二叉树最后一个叶子节点的父节点=>最后一个非叶子节点,或 $fNode = floor($n/2)
+        for ($i = $n>>1; $i >= 1; $i--) {
+            $this->shipDown($i);
+        }
     }
 }
 
+$common = new common();
 $maxHeap = new MaxHeap();
 echo 'size before:' . $maxHeap->size() . "\r\n";
 $num = isset($argv[1]) && $argv[1] == 'num' && isset($argv[2]) ? $argv[2] : 10; //数组大小
+$arr = $common->generateRandomArray($num, 1, 2000);
+//$arr = array(1211,28,108,1839,483);
+echo 'arr before:' . print_r($arr, true);
+$maxHeap->maxHeap($arr);
+$maxHeap->printData();
+exit;
 
 srand(time(0)); // 设置种子,并生成伪随机序列
 for ($i = 0; $i < $num; $i++) {
