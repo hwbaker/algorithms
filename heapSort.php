@@ -11,15 +11,15 @@
  * << 向左移位
  * >> 向右移位
  */
-$arr = array(1,8,7,2,3,4,6,5,9,10);
-array_unshift($arr, 0);
-echo "i节点 \t FatherNode \t leftNode \t rightNode \r\n";
-foreach ($arr as $n => $item) {
-    $fNode = $n>>1; //父节点
-    $lNode = $n<<1; //左子节点
-    $rNode = ($n<<1) + 1; //右子节点
-    echo "{$n} \t {$fNode} \t {$lNode} \t {$rNode} \r\n";
-}
+//$arr = array(1,8,7,2,3,4,6,5,9,10);
+//array_unshift($arr, 0);
+//echo "i节点 \t FatherNode \t leftNode \t rightNode \r\n";
+//foreach ($arr as $n => $item) {
+//    $fNode = $n>>1; //父节点
+//    $lNode = $n<<1; //左子节点
+//    $rNode = ($n<<1) + 1; //右子节点
+//    echo "{$n} \t {$fNode} \t {$lNode} \t {$rNode} \r\n";
+//}
 
 class heep
 {
