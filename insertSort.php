@@ -65,6 +65,23 @@ function insertSortAdv(array &$arr)
 }
 
 /**
+ * @desc 第二层循环$j = $i - 1
+ * @param array $arr
+ */
+function insertSortTest(array &$arr)
+{
+    $n = count($arr);
+    for ($i = 1; $i < $n; $i++) {
+        $element = $arr[$i];
+        for ($j = $i - 1; $j >= 0 && $arr[$j] > $element; $j--) {
+            $arr[$j + 1] = $arr[$j];
+        }
+        $arr[$j + 1] = $element;
+    }
+
+}
+
+/**
  * @desc 插入排序算法,改进版.内层循环while形式
  * @param array $arr
  */
@@ -86,7 +103,7 @@ $common = new common;
 $num = isset($argv[1]) && $argv[1] == 'num' && isset($argv[2]) ? $argv[2] : 10; //数组大小
 $arr = $common->generateRandomArray($num, 1, 2000);
 $timeSta = $common->getMillisecond();
-//echo 'before:' . implode(',', $arr) . "\r\n";
-insertSortAdvWhile($arr);
+echo 'before:' . implode(',', $arr) . "\r\n";
+insertSortTest($arr);
 echo  $common->timeDiff($timeSta);
-//echo 'after:' . implode(',', $arr) . "\r\n";
+echo 'after:' . implode(',', $arr) . "\r\n";
