@@ -70,7 +70,7 @@ function partition (array &$arr, $l, $r)
         while ($i <= $r && $arr[$i] < $v) {
             $i++;
         }
-        while ($j >= $l+1 && $arr[$j] > $v) {
+        while ($j >= $l + 1 && $arr[$j] > $v) {
             $j--;
         }
         if ($i > $j) {
