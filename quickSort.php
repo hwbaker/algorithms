@@ -5,6 +5,9 @@
  * User: hewei
  * Date: 17/2/10
  * Time: 上午10:08
+ *
+ *  cd /users/hewei/site/git/algorithms
+ * /usr/local/bin/php quickSort.php num 100
  */
 
 require("common.php");
@@ -42,6 +45,7 @@ function quickSortDetail(array &$arr, $l, $r)
 }
 
 /**
+ * @desc 对arr[l...r]部分进行partition操作.返回p,使得arr[l...p-1] < arr[p];arr[p+1...r] > arr[p]
  * @param $arr
  * @param $l
  * @param $r
@@ -58,9 +62,11 @@ function partition (array &$arr, $l, $r)
 
     $v = $arr[$l];
     $j = $l; // arr[l+1...j] < v ; arr[j+1...i) > v
+    $i = $l + 1;
     echo 'l:' . $l .';r:' . $r . "\r\n";
-    for( $i = $l + 1 ; $i <= $r ; $i ++ ) {
+    for( $i ; $i <= $r ; $i ++ ) {
         echo 'i:' . $i . "\r\n";
+        echo $arr[$i] . '_' . $v."\r\n";
         if ($arr[$i] < $v) {
             echo 'j:' . $j . "\r\n";
             $j++;
@@ -119,8 +125,8 @@ function sortWeb(array &$arr)
 
 $common = new common();
 $num = isset($argv[1]) && $argv[1] == 'num' && isset($argv[2]) ? $argv[2] : 10; //数组大小
-$arr = $common->generateRandomArray($num, 1, 2000);
-//$arr = array(4,3,2,1);
+//$arr = $common->generateRandomArray($num, 1, 2000);
+$arr = array(4,3,2,1);
 echo 'before:' . implode(',', $arr) . "\r\n";
 $timeSta = $common->getMillisecond();
 quickSort($arr);
