@@ -1,5 +1,6 @@
 <?php
 /**
+ * @desc 求一个数组的逆序对.
  * Created by PhpStorm.
  * User: hewei
  * Date: 17/4/20
@@ -14,13 +15,13 @@ $num = 0;
 function mergeSort(array &$array)
 {
     $n = count($array);
-    __mergeSort($array, 0, $n-1);
+    __mergeSort($array, 0, $n - 1);
 }
 
 function __mergeSort(array &$array, $l, $r)
 {
     if ($l >= $r ) {
-//        echo 'l >= r:' ."$l >= $r \r\n";
+        echo 'l >= r:' ."$l >= $r \r\n";
         return false;
     }
 
@@ -36,10 +37,10 @@ function __merge(array &$array, $l, $mid , $r)
     for ($i = $l; $i <= $r; $i++) {
         $aux[$i - $l] = $array[$i];
     }
-//    echo 'aux:'.print_r($aux, true);
+    echo 'aux:'.print_r($aux, true);
 
     $i = $l;
-    $j = $mid +1;
+    $j = $mid + 1;
     $k = $l;
     for ($k; $k <= $r; $k++) {
         if ($i > $mid) {
@@ -62,7 +63,7 @@ function __merge(array &$array, $l, $mid , $r)
 //    echo 'num:'.$num."\r\n";
 }
 
-$arr = array(1,2,3,4,5,6);
+$arr = array(1,40,22,13,10,3);
 echo 'before:' . print_r($arr, true);
 mergeSort($arr);
 echo 'after:' . print_r($arr, true);
