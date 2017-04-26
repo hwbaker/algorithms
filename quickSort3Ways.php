@@ -30,7 +30,7 @@ function quickSortDetail(array &$arr, $l, $r)
         return false;
     }
 //    if ($r - $l <= 15) {
-//        // 插入排序:真对l和r区间
+//        // 插入排序:针对l和r区间
 //        common::insertSortRange($arr, $l, $r);
 //        return false;
 //    }
