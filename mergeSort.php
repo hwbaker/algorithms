@@ -38,7 +38,7 @@ function mergeSortDetail(array &$arr, $l, $r)
 
     // 归并排序优化二:当l和r非常小的时候,改用插入排序.具体实现如下:
     if ($r - $l <= 15) {
-        // 插入排序:真对l和r区间
+        // 插入排序:针对l和r区间
         common::insertSortRange($arr, $l, $r);
         return false;
     }
