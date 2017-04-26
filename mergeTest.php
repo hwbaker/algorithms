@@ -21,7 +21,7 @@ function mergeSort(array &$array)
 function __mergeSort(array &$array, $l, $r)
 {
     if ($l >= $r ) {
-        echo 'l >= r:' ."$l >= $r \r\n";
+//        echo 'l >= r:' ."$l >= $r \r\n";
         return false;
     }
 
@@ -37,11 +37,12 @@ function __merge(array &$array, $l, $mid , $r)
     for ($i = $l; $i <= $r; $i++) {
         $aux[$i - $l] = $array[$i];
     }
-    echo 'aux:'.print_r($aux, true);
+//    echo 'aux:'.print_r($aux, true);
 
     $i = $l;
     $j = $mid + 1;
     $k = $l;
+//    echo 'i:'.$i.',j:'.$j.',mid:'.$mid."\r\n";
     for ($k; $k <= $r; $k++) {
         if ($i > $mid) {
             $array[$k] = $aux[$j - $l];
