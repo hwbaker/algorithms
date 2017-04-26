@@ -6,13 +6,15 @@
  * User: hewei
  * Date: 17/2/14
  * Time: 下午6:09
+ *
+ * cd /users/hewei/site/git/algorithms
+ * /usr/local/bin/php MaxHeap.php num 100
  */
 require("common.php");
 
 class MaxHeap
 {
     private $data;
-    private $count;
     /**
      * @desc 构造函数
      * MaxHeap constructor.
@@ -20,7 +22,6 @@ class MaxHeap
     public function __construct()
     {
         $this->data = array();
-        $this->count = 0;
     }
 
     /**
@@ -58,8 +59,8 @@ class MaxHeap
     }
 
     /**
-     * @desc 上浮
-     * @param $k
+     * @desc 堆上浮
+     * @param $k,入队元素坐标
      */
     private function shiftUp($k)
     {
@@ -76,8 +77,8 @@ class MaxHeap
     }
 
     /**
-     * @desc 堆顶元素出队
-     * @param $k,堆顶坐标
+     * @desc 堆下沉
+     * @param $k,堆顶出队元素坐标
      */
     private function shipDown($k)
     {
@@ -86,7 +87,7 @@ class MaxHeap
         // 完全二叉树k节点判断是否有孩子标准:是否有左子节点
         while ($lNode <= $count) {
             // 判断k节点是否有右子节点 && 右子节点 是否大于 左子节点
-            if ($lNode+1 <= $count && $this->data[$lNode + 1] > $this->data[$lNode]) {
+            if ($lNode + 1 <= $count && $this->data[$lNode + 1] > $this->data[$lNode]) {
                 // data[lNode] 是 data[2*k]和data[2*k+1]中的最大值
                 $lNode++;
             }
@@ -101,38 +102,48 @@ class MaxHeap
     }
 
     /**
-     * @desc 堆中插入元素,入队
+     * @desc 堆插入元素,入队
      * @param $item
      */
     public function insert($item)
     {
-        $this->data[$this->count + 1] = $item;
-        $this->count++;
-        $this->shiftUp($this->count);
+        $count = $this->size();
+        $count++;
+        // 尾插入元素
+        $this->data[$count] = $item;
+        // 上浮,使数组满足最大堆定义
+        $this->shiftUp($count);
     }
 
     /**
-     * @desc 从堆中取出元素.最顶取出
+     * @desc 堆取出元素,堆顶元素出队
      */
     public function extractMax()
     {
-        $returnItem = $this->data[1]; // 堆顶返回值
-        common::swap($this->data, 1, $this->count); // 交换 堆顶和 最后一位
-        $this->count--; //数组长度-1
-        array_pop($this->data); //首元素剔除
+        $count = $this->size();
+        // 返回堆顶元素
+        $reItem = $this->data[1];
+        // 交换 堆顶 和 末位元素
+        common::swap($this->data, 1, $count);
+        // 销毁数组最后元素,数组长度-1
+        unset($this->data[$count]);
+//        array_pop($this->data); // 删除数组最后一个元素
+        // 下沉,使数组满足最大堆定义
         $this->shipDown(1);
-        return $returnItem;
+
+        return $reItem;
     }
+
 
     /**
      * @desc 给定一个数组,使数组的排列形成'堆形状'
      * Heapify
      * @param array $arr
      */
-    public function maxHeap(array &$arr)
+    public function makeMaxHeap(array &$arr)
     {
         $n = count($arr);
-        for ($i =0 ; $i < $n; $i++) {
+        for ($i = 0 ; $i < $n; $i++) {
             $this->data[$i + 1] = $arr[$i];
         }
 
@@ -143,36 +154,36 @@ class MaxHeap
     }
 }
 
-$common = new common();
+//$common = new common();
 $maxHeap = new MaxHeap();
 echo 'size before:' . $maxHeap->size() . "\r\n";
+$maxHeap->printData();
 $num = isset($argv[1]) && $argv[1] == 'num' && isset($argv[2]) ? $argv[2] : 10; //数组大小
-$arr = $common->generateRandomArray($num, 1, 2000);
-//$arr = array(1211,28,108,1839,483);
-echo 'arr before:' . print_r($arr, true);
-$maxHeap->maxHeap($arr);
-$maxHeap->printData();
-exit;
 
-srand(time(0)); // 设置种子,并生成伪随机序列
-for ($i = 0; $i < $num; $i++) {
-    $maxHeap->insert(rand() % 100);
-}
+//srand(time(0)); // 设置种子,并生成伪随机序列
+//for ($i = 0; $i < $num; $i++) {
+//    $maxHeap->insert(rand() % 100);
+//}
 
-//$maxHeap->insert(10);
-//$maxHeap->insert(40);
-//$maxHeap->insert(45);
-//$maxHeap->insert(100);
-//$maxHeap->insert(50);
+// 元素入堆
+$maxHeap->insert(10);
+$maxHeap->insert(40);
+$maxHeap->insert(45);
+$maxHeap->insert(100);
+$maxHeap->insert(50);
 
 $maxHeap->printData();
 
-// 按序输出
+// 按倒序输出
 while (!$maxHeap->isEmpty()) {
-    echo $maxHeap->extractMax() . ',';
+    $itemOne = $maxHeap->extractMax();
+    echo $itemOne . "\n";
 }
-echo "\r\n";
-//88,64,63,55,54,44,37,15,6,4,
 
-echo 'size after:' . $maxHeap->size() . "\r\n";
-$maxHeap->printData();
+//$arr = $common->generateRandomArray($num, 1, 2000);
+//$arr = array(1211,28,108,1839,483);
+//$maxHeap->makeMaxHeap($arr);
+
+
+//echo 'size after:' . $maxHeap->size() . "\r\n";
+//$maxHeap->printData();
