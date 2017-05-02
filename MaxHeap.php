@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @desc 堆的基本存储.最大推实现,堆中每个父节点的元素值都大于等于其孩子结点(如果存在),这样的堆就是一个最大堆(二叉堆<=>完全二叉树,可用数组表示)
+ * @desc 堆的基本存储.最大推实现,堆中每个父结点的元素值都大于等于其孩子结点(如果存在),这样的堆就是一个最大堆(二叉堆<=>完全二叉树,可用数组表示)
  * Created by PhpStorm.
  * User: hewei
  * Date: 17/2/14
@@ -64,9 +64,9 @@ class MaxHeap
      */
     private function shiftUp($k)
     {
-        $fNode = $k>>1; //k看做是右叶子节点坐标,找寻k的父节点坐标$k>>1 或用 floor(($k - 1) / 2);
-//        $lNode = $k<<1; //左子节点
-//        $rNode = ($k<<1) + 1; //右子节点
+        $fNode = $k>>1; //k看做是右叶子结点坐标,找寻k的父结点坐标$k>>1 或用 floor(($k - 1) / 2);
+//        $lNode = $k<<1; //左子结点
+//        $rNode = ($k<<1) + 1; //右子结点
 //        echo "k:{$k} \t fNode:{$fNode} \t lNode:{$lNode} \t rNode:{$rNode} \r\n";
         while ($fNode > 0 && $this->data[$fNode] < $this->data[$k]) {
             common::swap($this->data, $fNode, $k);
@@ -82,16 +82,16 @@ class MaxHeap
      */
     private function shipDown($k)
     {
-        $j = $k<<1; //k看作是父节点,找寻k的左子节点左边$k<<1 或用 2*k
+        $j = $k<<1; //k看作是父结点,找寻k的左子结点坐标$k<<1 或用 2*k
         $count = $this->size();
-        // 完全二叉树k节点判断是否有孩子标准:是否有左子节点
+        // 完全二叉树k结点判断是否有孩子标准:是否有左子结点
         while ($j <= $count) {
-            // 判断k节点是否有右子节点 && 右子节点 是否大于 左子节点
+            // 判断k结点是否有右子结点 && 右子结点 是否大于 左子结点
             if ($j + 1 <= $count && $this->data[$j + 1] > $this->data[$j]) {
                 // data[lNode] 是 data[2*k]和data[2*k+1]中的最大值
                 $j++;
             }
-            // 父节点最大,无需交换,退出循环
+            // 父结点最大,无需交换,退出循环
             if ($this->data[$k] > $this->data[$j]) {
                 break;
             }
@@ -149,9 +149,8 @@ class MaxHeap
             $this->data[$i + 1] = $arr[$i];
         }
 
-        // 找寻二叉树最后一个叶子节点的父节点=>最后一个非叶子节点,或 $fNode = floor($n/2)
+        // 找寻二叉树最后一个叶子结点的父结点=>最后一个非叶子结点,或 $fNode = floor($n/2)
         for ($i = $n>>1; $i >= 1; $i--) {
-            echo $i . "\n";
             $this->shipDown($i);
         }
     }
