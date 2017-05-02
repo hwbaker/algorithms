@@ -82,22 +82,23 @@ class MaxHeap
      */
     private function shipDown($k)
     {
-        $lNode = $k<<1; //左子节点 或 2*k
+        $j = $k<<1; //k看作是父节点,找寻k的左子节点左边$k<<1 或用 2*k
         $count = $this->size();
         // 完全二叉树k节点判断是否有孩子标准:是否有左子节点
-        while ($lNode <= $count) {
+        while ($j <= $count) {
             // 判断k节点是否有右子节点 && 右子节点 是否大于 左子节点
-            if ($lNode + 1 <= $count && $this->data[$lNode + 1] > $this->data[$lNode]) {
+            if ($j + 1 <= $count && $this->data[$j + 1] > $this->data[$j]) {
                 // data[lNode] 是 data[2*k]和data[2*k+1]中的最大值
-                $lNode++;
+                $j++;
             }
             // 父节点最大,无需交换,退出循环
-            if ($this->data[$k] > $this->data[$lNode]) {
+            if ($this->data[$k] > $this->data[$j]) {
                 break;
             }
-            common::swap($this->data, $lNode, $k);
-            $k = $lNode;
-            $lNode = $k<<1;
+            common::swap($this->data, $j, $k);
+
+            $k = $j;
+            $j = $k<<1;
         }
     }
 
@@ -142,6 +143,7 @@ class MaxHeap
      */
     public function makeMaxHeap(array &$arr)
     {
+        // 重新赋值数组,是索引从1开始
         $n = count($arr);
         for ($i = 0 ; $i < $n; $i++) {
             $this->data[$i + 1] = $arr[$i];
@@ -149,12 +151,12 @@ class MaxHeap
 
         // 找寻二叉树最后一个叶子节点的父节点=>最后一个非叶子节点,或 $fNode = floor($n/2)
         for ($i = $n>>1; $i >= 1; $i--) {
+            echo $i . "\n";
             $this->shipDown($i);
         }
     }
 }
 
-//$common = new common();
 $maxHeap = new MaxHeap();
 echo 'size before:' . $maxHeap->size() . "\r\n";
 $maxHeap->printData();
@@ -180,10 +182,12 @@ while (!$maxHeap->isEmpty()) {
     echo $itemOne . "\n";
 }
 
+//$common = new common();
 //$arr = $common->generateRandomArray($num, 1, 2000);
-//$arr = array(1211,28,108,1839,483);
-//$maxHeap->makeMaxHeap($arr);
+$arr = array(1211, 28, 108, 1839, 483);
+echo "makeMaxHeapTest...\r\narr:" . print_r($arr, true);
+$maxHeap->makeMaxHeap($arr);
 
 
-//echo 'size after:' . $maxHeap->size() . "\r\n";
-//$maxHeap->printData();
+echo 'size after:' . $maxHeap->size() . "\r\n";
+$maxHeap->printData();
