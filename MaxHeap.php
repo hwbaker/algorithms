@@ -80,9 +80,9 @@ class MaxHeap
      * @desc 堆下沉
      * @param $k,堆顶出队元素坐标
      */
-    private function shipDown($k)
+    private function shiftDown($k)
     {
-        $j = $k<<1; //k看作是父结点,找寻k的左子结点坐标$k<<1 或用 2*k
+        $j = $k<<1; //k看作是父结点,找寻k的左子结点坐标$j = $k<<1 或用 $j = 2*$k
         $count = $this->size();
         // 完全二叉树k结点判断是否有孩子标准:是否有左子结点
         while ($j <= $count) {
@@ -99,6 +99,69 @@ class MaxHeap
 
             $k = $j;
             $j = $k<<1;
+        }
+    }
+
+    /**
+     * @desc 原地堆排序,且数组索引从0开始
+     * @param $arr
+     * @param $n   需处理数组长度
+     * @param $k   父结点坐标[索引]
+     */
+    private function shiftDownIndexZero(&$arr, $n, $k)
+    {
+        // 左子结点是 2 * $k + 1
+        while (2 * $k + 1 < $n) {
+            $j = 2 * $k + 1;
+            if ($j+1 < $n && $arr[$j + 1] > $arr[$j]) {
+                $j++;
+            }
+            if ($arr[$k] > $arr[$j]) {
+                break;
+            }
+            common::swap($arr, $j, $k);
+            $k = $j;
+        }
+    }
+
+    /**
+     * @desc 原地堆排序"优化",且数组索引从0开始
+     * @param $arr
+     * @param $n   需处理数组长度
+     * @param $k   父结点坐标[索引]
+     */
+    private function shiftDownIndexZeroAve(&$arr, $n, $k)
+    {
+        // 左子结点是 2 * $k + 1
+        $ele = $arr[$k];
+        while (2 * $k + 1 < $n) {
+            $j = 2 * $k + 1;
+            if ($j+1 < $n && $arr[$j + 1] > $arr[$j]) {
+                $j++;
+            }
+            if ($arr[$k] > $arr[$j]) {
+                break;
+            }
+            $arr[$k] = $arr[$j];
+            $k = $j;
+        }
+        $arr[$k]= $ele;
+    }
+
+    /**
+     * @desc 原地堆排序
+     * @param $arr
+     * @param $n
+     */
+    public function heapSort(&$arr, $n)
+    {
+        for ($i = floor(($n - 1 )/2) ; $i >= 0 ; $i--) {
+            $this->shiftDownIndexZeroAve($arr, $n, $i);
+        }
+
+        for($i = $n - 1; $i > 0 ; $i--){
+            common::swap($arr,0, $i);
+            $this->shiftDownIndexZeroAve($arr, $i, 0);
         }
     }
 
@@ -130,7 +193,7 @@ class MaxHeap
         unset($this->data[$count]);
 //        array_pop($this->data); // 删除数组最后一个元素
         // 下沉,使数组满足最大堆定义
-        $this->shipDown(1);
+        $this->shiftDown(1);
 
         return $reItem;
     }
@@ -151,7 +214,7 @@ class MaxHeap
 
         // 找寻二叉树最后一个叶子结点的父结点=>最后一个非叶子结点,或 $fNode = floor($n/2)
         for ($i = $n>>1; $i >= 1; $i--) {
-            $this->shipDown($i);
+            $this->shiftDown($i);
         }
     }
 }
@@ -167,11 +230,11 @@ $num = isset($argv[1]) && $argv[1] == 'num' && isset($argv[2]) ? $argv[2] : 10; 
 //}
 
 // 元素入堆
-$maxHeap->insert(10);
-$maxHeap->insert(40);
-$maxHeap->insert(45);
-$maxHeap->insert(100);
-$maxHeap->insert(50);
+$maxHeap->insert(1211);
+$maxHeap->insert(28);
+$maxHeap->insert(108);
+$maxHeap->insert(1839);
+$maxHeap->insert(483);
 
 $maxHeap->printData();
 
@@ -184,9 +247,17 @@ while (!$maxHeap->isEmpty()) {
 //$common = new common();
 //$arr = $common->generateRandomArray($num, 1, 2000);
 $arr = array(1211, 28, 108, 1839, 483);
-echo "makeMaxHeapTest...\r\narr:" . print_r($arr, true);
+echo "构建数组成堆...\r\narr:" . print_r($arr, true);
 $maxHeap->makeMaxHeap($arr);
 
 
 echo 'size after:' . $maxHeap->size() . "\r\n";
 $maxHeap->printData();
+
+echo "原地堆排序\n";
+$n = count($arr);
+$maxHeap->heapSort($arr, $n);
+print_r($arr);
+
+
+
