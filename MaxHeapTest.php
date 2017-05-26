@@ -82,7 +82,7 @@ class MaxHeapTest
      */
     private function shiftDown($k)
     {
-        $j = $k<<1; //k看作是父结点,找寻k的左子结点坐标$j = $k<<1 或用 $j = 2*$k
+        $j = $k<<1; //k看作是父结点,找寻k的左子结点坐标$j = $k<<1 或用 $j = 2*$k 
         $count = $this->size();
         // 完全二叉树k结点判断是否有孩子标准:是否有左子结点
         while ($j <= $count) {
