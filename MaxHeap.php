@@ -60,7 +60,7 @@ class MaxHeap
      */
     private function shiftUp($k)
     {
-        // 父节点 小于 叶子节点
+        // 父结点 小于 叶子结点
         while ($k > 1 && $this->data[floor($k / 2)] < $this->data[$k]) {
             common::swap($this->data, floor($k / 2), $k);
             $k = floor($k / 2);
@@ -107,7 +107,7 @@ class MaxHeap
      * @param array $arr
      * @return array
      */
-    public function maxHeapSort(array $arr)
+    public function maxHeapSort1(array $arr)
     {
         $n = count($arr);
         for ($i = 0; $i < $n; $i++) {
@@ -119,6 +119,53 @@ class MaxHeap
         }
         return $arr;
     }
+
+    /**
+     * @desc 给定一个数组,使数组的排序形成"堆形状".该过程称为"Heapify"
+     * @param array $arr
+     */
+    public function heapify(array $arr)
+    {
+        $n = count($arr);
+        for ($i = 0; $i < $n; $i++) {
+            $this->data[$i + 1] = $arr[$i];
+        }
+
+        for ($i = floor($n/2); $i >= 1; $i--) {
+            $this->shiftDown($i);
+        }
+    }
+
+    /**
+     * @desc Heapify方式进行堆排序
+     * @param array $arr
+     * @return array
+     */
+    public function maxHeapSort2(array $arr)
+    {
+        $n = count($arr);
+        $this->heapify($arr);
+        for ($i = $n - 1; $i >= 0; $i--) {
+            $arr[$i] = $this->extractMax();
+        }
+        return $arr;
+    }
+
+    /**
+     * @desc 优化的堆索引
+     */
+    function heapSort(array $arr)
+    {
+        $n = count($arr);
+        for ($i = floor($n/2) - 1; $i >= 0; $i--) {
+            __shiftDown($arr, $n, $i);
+        }
+
+        for ($i = $n - 1; $i > 0; $i++) {
+            common::swap($arr, 0, $i);
+            __shiftDown($arr, $i, 0);
+        }
+    }
 }
 
 $maxHeap = new MaxHeap();
@@ -128,7 +175,13 @@ $maxHeap = new MaxHeap();
 //$maxHeap->insert(5);
 //$maxHeap->printData();
 
-$arr = array(44, 1, 10, 14, 5);
-$arrResult = $maxHeap->maxHeapSort($arr);
+$arr = array(44, 1, 10, 113, 555, 7);
+$arrResult = $maxHeap->maxHeapSort1($arr);
 print_r($arrResult);
+
+//$arrResult = $maxHeap->maxHeapSort2($arr);
+//print_r($arrResult);
+
+//$maxHeap->heapify($arr);
+//$maxHeap->printData();
 
