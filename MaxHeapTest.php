@@ -12,7 +12,6 @@
  */
 require("common.php");
 
-
 class MaxHeapTest
 {
     private $data;
