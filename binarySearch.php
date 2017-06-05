@@ -43,25 +43,20 @@ class binarySearch
         $r = $n - 1;
 
         while ($l <= $r) {
-            $mid = floor(($l + $r)/2);
-//            echo 'mid:'.$mid. "\r\n";
-//            echo 'target:' . $arr[$mid] . "\r\n";
+//            $mid = floor(($l + $r)/2);
+            //为避免内存溢出，mid取值改用减法
+            $mid = floor($l + ($r - $l)/2);
             if ($target == $arr[$mid]) {
                 return $mid;
             }
 
             if ($target < $arr[$mid]) {
                 $r = $mid - 1;
-//                echo 'r:'.$r. "\r\n";
             } else {
                 $l = $mid + 1;
-//                echo 'l:'.$l. "\r\n";
             }
-
         }
-
         return -1;
-
     }
 
     /**
