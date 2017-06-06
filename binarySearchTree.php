@@ -76,7 +76,7 @@ class BST
     }
 
     /**
-     * 前序遍历
+     * @desc 前序遍历(深度遍历)
      */
     public function preOrder()
     {
@@ -84,7 +84,7 @@ class BST
     }
 
     /**
-     * 中序遍历
+     * @desc 中序遍历(深度遍历)
      */
     public function inOrder()
     {
@@ -92,7 +92,7 @@ class BST
     }
 
     /**
-     * 后序遍历
+     * @desc 后序遍历(深度遍历)
      */
     public function postOrder()
     {
@@ -100,8 +100,79 @@ class BST
     }
 
     /**
-     * @desc 向以node为根的二叉搜索树中,插入节点(key, val)
-     * 返回插入新节点后的二叉搜索树的根
+     * @desc 层序遍历(广度遍历)
+     */
+    public function levelOrder()
+    {
+        $queue[] = $this->root;
+        $count = count($queue);
+        while ($count >= 1) {
+            $node = array_shift($queue); //队列，将数组开头的单元移出数组
+            echo $node->key . '  ';
+
+            if ($node->left) {
+                $queue[] = $node->left;
+            }
+            if ($node->right) {
+                $queue[] = $node->right;
+            }
+            $count = count($queue);
+        }
+    }
+
+    /**
+     * @desc 层序遍历-递归
+     */
+    public function levelOrderRecursive()
+    {
+        $arr = array();
+        $this->levelOrderRecursivePrivate($this->root, $arr);
+    }
+
+    /**
+     * @desc 寻找最小的键值
+     * 可用非递归方式,todo...
+     */
+    public function minMum()
+    {
+        $minNode = $this->minMumPrivate($this->root);
+        return $minNode->key;
+    }
+
+    /**
+     * @desc  寻找最大的键值
+     * 可用非递归方式,todo...
+     * @return mixed
+     */
+    public function maxMum()
+    {
+        $maxNode = $this->maxMumPrivate($this->root);
+        return $maxNode->key;
+    }
+
+    /**
+     * @desc 从二分树中删除最小值所在节点
+     */
+    public function removeMin()
+    {
+        if ($this->root) {
+            $this->root = $this->removeMinPrivate($this->root);
+        }
+    }
+
+    /**
+     * @desc 从二分树中删除最大值所在节点
+     */
+    public function removeMax()
+    {
+        if ($this->root) {
+            $this->root = $this->removeMaxPrivate($this->root);
+        }
+    }
+
+    /**
+     * @desc 向以node为根的二分搜索树中,插入节点(key, val)
+     * 返回插入新节点后的二分搜索树的根
      * @param $node
      * @param $key
      * @param $value
@@ -148,7 +219,7 @@ class BST
     }
 
     /**
-     * @desc  在以node为根的二叉搜索树中查找key所对应的value
+     * @desc  在以node为根的二分搜索树中查找key所对应的value
      * @param $node
      * @param $key
      * @return null
@@ -169,7 +240,7 @@ class BST
     }
 
     /**
-     * @desc 对以node为节点的二叉搜索树进行前序遍历
+     * @desc 对以node为节点的二分搜索树进行前序遍历
      * @param $node
      */
     private function preOrderPrivate($node)
@@ -182,7 +253,7 @@ class BST
     }
 
     /**
-     * @desc 对以node为节点的二叉搜索树进行中序遍历
+     * @desc 对以node为节点的二分搜索树进行中序遍历
      * @param $node
      */
     private function inOrderPrivate($node)
@@ -195,7 +266,7 @@ class BST
     }
 
     /**
-     * @desc 对以node为节点的二叉搜索树进行后序遍历
+     * @desc 对以node为节点的二分搜索树进行后序遍历
      * @param $node
      */
     private function postOrderPrivate($node)
@@ -221,73 +292,98 @@ class BST
         }
     }
 
-}
-/**
- * @desc 初始化构建一个二分搜索树
- * 使用数组构建二分搜索树,将数组传递到函数中,遍历循环数组，将数组中的元素依次添加到二分搜索树中
- * @param array $arr
- * @return bool|Node
- */
-function buildBinarySearchTree(array $arr)
-{
-    if (empty($arr)) {
-        return false;
-    }
-    // 初始化根节点
-    $root = new Node();
-    $level = 1;
-    foreach ($arr as $key => $value) {
-        if ($level == 1 ) {
-            $root->key = $key;
-            $root->value = $value;
-        } else {
-            $newNode = new Node();
-            $newNode->key = $key;
-            $newNode->value = $value;
-            //将新创建的节点，添加到初始化好的二分搜索树中
-            /*
-            添加操作，是初始化二分搜索树的关键操作
-            因为在处理添加节点的过程之中要根据传入的数据的大小，不断的分析新节点需要存放的位置
-            */
-            insertBinarySearchTree($root, $newNode);
+    /**
+     * @desc 在以node为根的二分搜索树中，返回最小键值的节点
+     * @param $node
+     * @return mixed
+     */
+    private function minMumPrivate($node)
+    {
+        if ($node->left == null) {
+            return $node;
         }
-        $level++;
+
+        return $this->minMumPrivate($node->left);
     }
 
-    return $root;
-}
-
-/**
- * @desc 添加节点到二分搜索树中
- * 思路如下:如果待添加的节点的key大于(小于)根节点,就将该节点与根节点的右(左)子节点继续比较
- * 如果根节点的右(左)节点为空,也就是说根节点并不存在右(左)子节点,就将该节点放置到根节点的右(左)子节点的位置上
- * 如果存在右(左)子节点,就将该新增的节点与右(左)子节点继续按照上面的方式比较,直到放置到合适的位置为止
- * @param $root
- * @param $newNode
- * @return bool
- */
-function insertBinarySearchTree($root, $newNode)
-{
-    if ($root->key == $newNode->key) {
-        $root->value = $newNode->value;
-        return true;
-    } else if ($root->key > $newNode->key) {
-        if ($root->left == null) {
-            $root->left = $newNode;
-            return true;
-        } else {
-            $root = $root->left;
-            insertBinarySearchTree($root, $newNode);
+    /**
+     * @desc 在以node为根的二分树中，返回最大键值的节点
+     * @param $node
+     * @return mixed
+     */
+    private function maxMumPrivate($node)
+    {
+        if ($node->right == null) {
+            return $node;
         }
-    } else {
-        if ($root->right == null) {
-            $root->right = $newNode;
-            return true;
+
+        return $this->maxMumPrivate($node->right);
+    }
+
+    /**
+     * @desc 删除掉以node为根的二分搜索树的最小节点
+     * 返回删除节点后新的二分搜索树的根
+     * @param $node
+     * @return mixed
+     */
+    private function removeMinPrivate($node)
+    {
+        if ($node->left == null) {
+            $rightNode = $node->right;
+//            unset($node);
+            return $rightNode;
+        }
+
+        $node->left = $this->removeMinPrivate($node->left);
+        return $node;
+    }
+
+    /**
+     * @desc 删除掉以node为根的二分搜索树的最大节点
+     * 返回删除节点后新的二分搜索树的根
+     * @param $node
+     * @return mixed
+     */
+    private function removeMaxPrivate($node)
+    {
+        if ($node->right == null) {
+            $leftNode = $node->left;
+//            unset($node);
+            return $leftNode;
+        }
+        $node->right = $this->removeMaxPrivate($node->right);
+        return $node;
+    }
+
+    /**
+     * @desc 首先访问根节点,然后将根节点的两个子节点存放到queue()中,然后每次从queue()中取出一个没有遍历的节点,输出该节点的值,
+     * 并将该节点的左右两个节点存储到queue()中.依次类推,直到取到到所有节点的都没有左右子节点为止
+     * @param $node
+     * @param $queue
+     * @return bool
+     */
+    private function levelOrderRecursivePrivate($node, &$queue)
+    {
+        if ($node){
+            echo $node->key . '  ';
         } else {
-            $root = $root->right;
-            insertBinarySearchTree($root, $newNode);
+            return false;
+        }
+
+        if ($node->left) {
+            $queue[] = $node->left;
+        }
+        if ($node->right) {
+            $queue[] = $node->right;
+        }
+
+        $count = count($queue);
+        if ($count >= 1) {
+            $shiftNode = array_shift($queue);
+            $this->levelOrderRecursivePrivate($shiftNode, $queue);
         }
     }
+
 }
 
 $BST = new BST();
@@ -316,6 +412,24 @@ $BST->inOrder();
 
 echo "后序\r\n";
 $BST->postOrder();
+
+echo "层序\r\n";
+//$BST->levelOrder();
+$BST->levelOrderRecursive();
+
+echo "\r\n最小键值\r\n";
+var_dump($BST->minMum());
+
+echo "最大键值\r\n";
+var_dump($BST->maxMum());
+
+//echo "删除最小节点";
+//$BST->removeMin();
+//$BST->printNode();
+
+//echo "删除最大节点";
+//$BST->removeMax();
+//$BST->printNode();
 
 
 //$nodeArr = array(2 => "222", 1 => "111", 0 => "000", 4 => "444", 3 => "333");
