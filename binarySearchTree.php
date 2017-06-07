@@ -130,24 +130,24 @@ class BST
     }
 
     /**
-     * @desc 寻找最小的键值
+     * @desc 寻找最小的键值,返回最小键值的二分搜索树
      * 可用非递归方式,todo...
      */
     public function minMum()
     {
         $minNode = $this->minMumPrivate($this->root);
-        return $minNode->key;
+        return $minNode;
     }
 
     /**
-     * @desc  寻找最大的键值
+     * @desc  寻找最大的键值,返回最大键值的二分搜索树
      * 可用非递归方式,todo...
      * @return mixed
      */
     public function maxMum()
     {
         $maxNode = $this->maxMumPrivate($this->root);
-        return $maxNode->key;
+        return $maxNode;
     }
 
     /**
@@ -168,6 +168,22 @@ class BST
         if ($this->root) {
             $this->root = $this->removeMaxPrivate($this->root);
         }
+    }
+
+    /**
+     * @desc 删除二分搜索树任意节点||右子树中最小key
+     */
+    public function remove($key)
+    {
+        $this->root = $this->removePrivate($this->root, $key);
+    }
+
+    /**
+     * @desc 删除二分搜索树任意节点||左子树中最大key
+     */
+    public function removeSecond($key)
+    {
+        $this->root = $this->removeSecondPrivate($this->root, $key);
     }
 
     /**
@@ -384,6 +400,83 @@ class BST
         }
     }
 
+    /**
+     * @desc 删除以node为节点二分搜索树的key节点,后继节点
+     * @param $node
+     * @param $key
+     * @return bool
+     */
+    private function removePrivate($node, $key)
+    {
+        if ($node == null) {
+            return false;
+        }
+
+        if ($key < $node->key) {
+            $node->left = $this->removePrivate($node->left, $key);
+            return $node;
+        } elseif($key > $node->key) {
+            $node->right = $this->removePrivate($node->right, $key);
+            return $node;
+        } else { // key == $node->key
+            // 只有左子树
+            if ($node->right == null) {
+                $leftNode = $node->left;
+                return $leftNode;
+            }
+            // 只有右子数
+            if ($node->left == null) {
+                $rightNode = $node->right;
+                return $rightNode;
+            }
+
+            // 左右子树都有
+            // 找node右子树的最小节点,作为后继节点
+            $successor = $this->minMumPrivate($node->right);
+            $successor->left = $node->left;
+            // 删除node节点右子树的最小值 && 赋值给候机节点$successor的右子树
+            $successor->right = $this->removeMinPrivate($node->right);
+            return $successor;
+        }
+    }
+
+    /**
+     * @desc 删除以node为节点二分搜索树的key节点,前驱节点
+     * @param $node
+     * @param $key
+     * @return bool|mixed
+     */
+    private function removeSecondPrivate($node, $key)
+    {
+        if ($node == null) {
+            return false;
+        }
+
+        if ($key < $node->key) {
+            $node->left = $this->removeSecondPrivate($node->left, $key);
+            return $node;
+        } elseif ($key > $node->key) {
+            $node->right = $this->removeSecondPrivate($node->right, $key);
+            return $node;
+        } else {
+            if ($node->right == null) {
+               $leftNode = $node->left;
+               return $leftNode;
+            }
+            if ($node->left == null) {
+                $rightNode = $node->right;
+                return $rightNode;
+            }
+
+            // 左右子树都有
+            // 寻找node左子树的最大节点,作为前驱节点
+            $precursor = $this->maxMumPrivate($node->left);
+            $precursor->left = $this->removeMaxPrivate($node->left);
+            $precursor->right = $node->right;
+            return $precursor;
+        }
+    }
+
 }
 
 $BST = new BST();
@@ -431,6 +524,13 @@ var_dump($BST->maxMum());
 //$BST->removeMax();
 //$BST->printNode();
 
+echo "删除任意节点,后继做补充";
+//$BST->remove(28);
+//$BST->printNode();
+
+echo "删除任意节点,前驱做补充";
+$BST->removeSecond(28);
+$BST->printNode();
 
 //$nodeArr = array(2 => "222", 1 => "111", 0 => "000", 4 => "444", 3 => "333");
 //调用初始化函数，创建二分搜索树
