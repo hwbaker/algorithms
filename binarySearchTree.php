@@ -13,6 +13,7 @@ class Node
 {
     public $key = null;
     public $value = null;
+    public $parent = null; // 父节点
     public $left = null;
     public $right = null;
 }
@@ -478,6 +479,53 @@ class BST
     }
 
 }
+
+/**
+ * @desc  二分查找树-父节点实现 todo...
+ * @param $root
+ * @param $iNode
+ */
+function insert($root, $iNode)
+{
+    $cNode = $root;
+    $pNode = null;
+    while ($cNode !== null) { #为iNode找到合适的插入位置
+        $pNode = $cNode;
+        if ($cNode->key > $iNode->key) {
+            $cNode = $cNode->left;
+        } else {
+            $cNode = $cNode->right;
+        }
+    }
+
+    $iNode->parent = $pNode->key;
+    print_r($pNode);
+    if ($pNode === null) { #pNode == null,说明是空树
+        $root = $iNode;
+    } else {
+        if ($pNode->key > $iNode->key) {
+            $pNode->left = $iNode;
+      } else {
+            $pNode->right = $iNode;
+      }
+    }
+}
+function build_iterative_tree($arr)
+{
+    $root = new Node();
+    $root->key = $arr[0];
+    $root->value = $arr[0];
+     for ($i = 1; $i < count($arr); $i++) {
+         $newNode = new Node();
+         $newNode->key = $arr[$i];
+         $newNode->value = $arr[$i];
+         insert($root, $newNode);
+     }
+     return $root;
+}
+$r = build_iterative_tree(array(1,2,3));
+print_r($r);
+exit;
 
 $BST = new BST();
 $BST->insert(32,'32q');
