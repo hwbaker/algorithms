@@ -122,6 +122,7 @@ class MaxHeap
 
     /**
      * @desc 给定一个数组,使数组的排序形成"堆形状".该过程称为"Heapify"
+     * 完全二叉树,所有的叶子结点都可以看做一个最大堆,第一个非叶子结点=floor(当前索引/2)
      * @param array $arr
      */
     public function heapify(array $arr)

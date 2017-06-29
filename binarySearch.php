@@ -1,5 +1,6 @@
 <?php
 /**
+ * @desc 二分查找法
  * Created by PhpStorm.
  * User: hewei
  * Date: 17/6/4
@@ -45,7 +46,7 @@ class binarySearch
         while ($l <= $r) {
 //            $mid = floor(($l + $r)/2);
             //为避免内存溢出，mid取值改用减法
-            $mid = floor($l + ($r - $l)/2);
+            $mid = floor($l + ($r - $l) / 2);
             if ($target == $arr[$mid]) {
                 return $mid;
             }
@@ -77,9 +78,9 @@ class binarySearch
         if ($target == $arr[$mid]) {
             return $mid;
         } else if ($target < $arr[$mid]) {
-            $this->binarySearchRecursive($l, $mid - 1, $target);
+            $this->__binarySearchRecursive($arr, $l, $mid - 1, $target);
         } else {
-            $this->binarySearchRecursive($mid + 1, $r, $target);
+            $this->__binarySearchRecursive($arr, $mid + 1, $r, $target);
         }
     }
 
