@@ -13,6 +13,7 @@
 /**
  * Class unionFind5 并查集 压缩路径
  */
+require("common.php");
 class unionFind5
 {
     private $parent = array();
@@ -20,14 +21,10 @@ class unionFind5
 
     public function __construct($n)
     {
-        $this->parent[0] = 0;
-        $this->rank[0] = $n+1;
-        for ($i = 1; $i < $n; $i++) {
-            $this->parent[$i] = $i+1;
-            $this->rank[$i] = $i; // rank[i]表示根节点为的树的高度
+        for ($i = 0; $i < $n; $i++) {
+            $this->parent[$i] = $i;
+            $this->rank[$i] = 1; // rank[i]表示根节点为的树的高度
         }
-        $this->parent[$n] = 0;
-        $this->rank[$n] = $n;
     }
 
     public function __destruct()
@@ -73,6 +70,11 @@ class unionFind5
         }
     }
 
+    public function isConnected($p, $q)
+    {
+        return $this->find($p) == $this->find($q);
+    }
+
     public function unionElements($p, $q)
     {
         $pRoot = $this->find($p);
@@ -94,9 +96,28 @@ class unionFind5
     }
 }
 
-$unionFind = new UnionFind5(4);
-$unionFind->printData();
-//$unionFind->unionElements(1,2);
+$n = 100000;
+$unionFind = new UnionFind5($n);
 //$unionFind->printData();
 
-$unionFind->find(1);
+$common = new common();
+$timeSta = $common->getMillisecond();
+
+srand(time(0));
+for( $i = 0 ; $i < $n ; $i ++ ){
+    $a = rand()% $n;
+    $b = rand() % $n;
+    $unionFind->unionElements($a, $b);
+}
+for($i = 0 ; $i < $n ; $i ++ ){
+    $a = rand() % $n;
+    $b = rand() % $n;
+    $unionFind->isConnected($a, $b);
+}
+
+
+//$unionFind->unionElements(1,2);
+echo  $common->timeDiff($timeSta);
+//$unionFind->printData();
+
+//$unionFind->find(1);
