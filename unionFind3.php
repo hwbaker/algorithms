@@ -4,7 +4,7 @@
  * Created by PhpStorm.
  * User: hewei
  * Date: 17/6/29
- * Time: 下午3:27
+ * Time: 下午4:27
  *
  * cd /users/hewei/site/git/algorithms
  * /usr/local/bin/php unionFind3.php
@@ -62,7 +62,6 @@ class unionFind3
             while ($p != $this->parent[$p]) {
                 $p = $this->parent[$p];
             }
-            var_dump($p);
             return $p;
         }
     }
@@ -79,7 +78,7 @@ class unionFind3
     }
 
     /**
-     * @desc 合并操作.根据元素个数有选择性的找到指向节点,使数的层数尽量低
+     * @desc 合并操作.根据元素个数有选择性的找到指向节点,使树的层数尽量低
      * @param $p
      * @param $q
      * @return bool

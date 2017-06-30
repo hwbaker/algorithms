@@ -3,55 +3,46 @@
 /**
  * Created by PhpStorm.
  * User: hewei
- * Date: 17/6/29
- * Time: 下午3:27
+ * Date: 17/6/30
+ * Time: 上午10:53
  *
  * cd /users/hewei/site/git/algorithms
- * /usr/local/bin/php unionFind2.php
+ * /usr/local/bin/php unionFind4.php
  */
 
 /**
- * Class unionFind2 并查集的另外一种实现方式
+ * Class unionFind4 基于rank的优化
  */
-class unionFind2
+class unionFind4
 {
     private $parent = array();
+    private $rank = array();
 
-    function __construct($n)
+    public function __construct($n)
     {
         for ($i = 0; $i < $n; $i++) {
             $this->parent[$i] = $i;
+            $this->rank[$i] = 1; // rank[i]表示根节点为的树的高度
         }
     }
 
-    function __destruct()
+    public function __destruct()
     {
         // TODO: Implement __destruct() method.
         unset($this->parent);
+        unset($this->rank);
     }
 
-    /**
-     * @desc 获取大小
-     * @return int
-     */
     public function getCount()
     {
         return count($this->parent);
     }
 
-    /**
-     * @desc 打印
-     */
     public function printData()
     {
         print_r($this->parent);
     }
 
-    /**
-     * @desc 查找
-     * @param $p
-     * @return mixed
-     */
     public function find($p)
     {
         $n = $this->getCount();
@@ -63,19 +54,13 @@ class unionFind2
         }
     }
 
-    /**
-     * @desc 判断两个节点是否属于同一个集合
-     * @param $p
-     * @param $q
-     * @return bool
-     */
     public function isConnected($p, $q)
     {
         return $this->find($p) == $this->find($q);
     }
 
     /**
-     * @desc 合并操作
+     * @desc 合并操作.根据根节点树的层数,使低层数合并到高层数
      * @param $p
      * @param $q
      * @return bool
@@ -89,13 +74,19 @@ class unionFind2
             return false;
         }
 
-        $this->parent[$pRoot] = $qRoot;
+        if ($this->rank[$pRoot] < $this->rank[$qRoot]) {
+            $this->parent[$pRoot] = $qRoot;
+        } elseif ($this->rank[$pRoot] > $this->rank[$qRoot]) {
+            $this->parent[$qRoot] = $pRoot;
+        } else { //rank[pRoot] == rank[qRoot]
+            $this->parent[$pRoot] = $qRoot;
+            $this->rank[$qRoot]++;
+//             $this->rank[$qRoot] += $this->rank[$pRoot];
+        }
     }
-
 }
 
-$unionFind = new UnionFind2(10);
+$unionFind = new UnionFind4(10);
 $unionFind->printData();
 $unionFind->unionElements(1,2);
 $unionFind->printData();
-//var_dump($unionFind->isConnected(1,0));
