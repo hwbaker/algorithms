@@ -13,6 +13,7 @@
 /**
  * Class unionFind4 基于rank的优化
  */
+require("common.php");
 class unionFind4
 {
     private $parent = array();
@@ -22,7 +23,7 @@ class unionFind4
     {
         for ($i = 0; $i < $n; $i++) {
             $this->parent[$i] = $i;
-            $this->rank[$i] = 1; // rank[i]表示根节点为的树的高度
+            $this->rank[$i] = 1; // rank[i]表示根节点为i的树的高度
         }
     }
 
@@ -40,7 +41,8 @@ class unionFind4
 
     public function printData()
     {
-        print_r($this->parent);
+        echo "parent:\r\n" . implode(",", $this->parent) . "\r\n";
+        echo "rank:\r\n" . implode(",", $this->rank) . "\r\n";
     }
 
     public function find($p)
@@ -86,7 +88,11 @@ class unionFind4
     }
 }
 
-$unionFind = new UnionFind4(10);
-$unionFind->printData();
-$unionFind->unionElements(1,2);
-$unionFind->printData();
+$n = 450000;
+$common = new common();
+$common->testUnion('UnionFind4', $n);
+
+//$unionFind = new UnionFind4(10);
+//$unionFind->printData();
+//$unionFind->unionElements(1,2);
+//$unionFind->printData();

@@ -13,6 +13,7 @@
 /**
  * Class unionFind3 并查集:基于size的优化
  */
+require ("common.php");
 class unionFind3
 {
     private $parent = array();
@@ -104,8 +105,12 @@ class unionFind3
 
 }
 
-$unionFind = new UnionFind3(10);
-$unionFind->printData();
-$unionFind->unionElements(1,2);
-$unionFind->printData();
+$n = 100000;
+$common = new common();
+$common->testUnion('UnionFind3', $n);
+
+//$unionFind = new UnionFind3(10);
+//$unionFind->printData();
+//$unionFind->unionElements(1,2);
+//$unionFind->printData();
 //var_dump($unionFind->isConnected(1,2));

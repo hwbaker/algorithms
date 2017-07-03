@@ -53,7 +53,7 @@ class common
     {
         $timeSta = $timeSta ? $timeSta : self::getMillisecond();
         $timeEnd = $timeEnd ? $timeEnd : self::getMillisecond();
-        echo $timeEnd - $timeSta . "MicSec...\r\n";
+        echo $timeEnd - $timeSta . "微秒...\r\n";
     }
 
     /**
@@ -84,5 +84,33 @@ class common
         $temp = $arr[$l]; // 将l和randI数据交换
         $arr[$l] = $arr[$r];
         $arr[$r] = $temp;
+    }
+
+    /**
+     * @desc 并查集测试函数
+     * @param $class 类名
+     * @param $n
+     */
+    public function testUnion($class, $n)
+    {
+        $unionFind = new $class($n);
+        //$unionFind->printData();
+
+        $timeSta = self::getMillisecond();
+
+        srand(time(0));
+        for( $i = 0 ; $i < $n ; $i ++ ){
+            $a = rand() % $n;
+            $b = rand() % $n;
+            $unionFind->unionElements($a, $b);
+        }
+//        for($i = 0 ; $i < $n ; $i ++ ){
+//            $a = rand() % $n;
+//            $b = rand() % $n;
+//            $unionFind->isConnected($a, $b);
+//        }
+
+        echo  self::timeDiff($timeSta);
+        //$unionFind->printData();
     }
 }

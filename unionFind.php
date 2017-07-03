@@ -18,6 +18,7 @@
  * 其至少支持两种操作—合并(Join)以及查询(Find)操作.一个集合中存在一个或者多个元素,为了描述多个元素属于同一个集合,我们一般规定:
  * 集合中的每一个元素都含有一个指针用于指向其父节点,依此类推,那么一个集合中必定含有一个根节点,该节点的指针指向自身,也就是说如果一个节点的指针指向自身,那么该节点就是该集合的根节点.
  */
+require ("common.php");
 class UnionFind
 {
     private $id = array();
@@ -95,8 +96,12 @@ class UnionFind
     }
 }
 
-$unionFind = new UnionFind(10);
-$unionFind->printData();
-$unionFind->unionElements(1,2);
-$unionFind->printData();
-var_dump($unionFind->isConnected(1,0));
+$n = 450000;
+$common = new common();
+$common->testUnion('UnionFind', $n);
+
+//$unionFind = new UnionFind(10);
+//$unionFind->printData();
+//$unionFind->unionElements(1,2);
+//$unionFind->printData();
+//var_dump($unionFind->isConnected(1,0));

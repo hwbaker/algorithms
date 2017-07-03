@@ -23,7 +23,7 @@ class unionFind5
     {
         for ($i = 0; $i < $n; $i++) {
             $this->parent[$i] = $i;
-            $this->rank[$i] = 1; // rank[i]表示根节点为的树的高度
+            $this->rank[$i] = 1; // rank[i]表示根节点为i的树的高度
         }
     }
 
@@ -41,8 +41,8 @@ class unionFind5
 
     public function printData()
     {
-        echo 'parent:' . print_r($this->parent, true);
-        echo 'rank:' . print_r($this->rank, true);
+        echo "parent:\r\n" . implode(",", $this->parent) . "\r\n";
+        echo "rank:\r\n" . implode(",", $this->rank) . "\r\n";
     }
 
     public function find($p)
@@ -52,20 +52,17 @@ class unionFind5
         if ($p >= 0 && $p < $n) {
 
             // 路径压缩版本1: path compression1
-//            while ($p != $this->parent[$p]) {
-//                $this->parent[$p] = $this->parent[$this->parent[$p]];
-//                $p = $this->parent[$p];
-//            }
-//            return $p;
-
-            // 路径压缩版本2: path compression2
-            if ($p != $this->parent[$p]) {
-//                echo 'parentP1:'.$this->parent[$p]."\r\n";
-                $this->parent[$p] = $this->find($this->parent[$p]);
-//                echo 'p:'.$p."\r\n";
-//                echo 'parentP2:'.$this->parent[$p]."\r\n";
+            while ($p != $this->parent[$p]) {
+                $this->parent[$p] = $this->parent[$this->parent[$p]];
+                $p = $this->parent[$p];
             }
-            return $this->parent[$p];
+            return $p;
+
+            // 路径压缩版本2[递归实现]: path compression2.
+//            if ($p != $this->parent[$p]) {
+//                $this->parent[$p] = $this->find($this->parent[$p]);
+//            }
+//            return $this->parent[$p];
 
         }
     }
@@ -96,28 +93,6 @@ class unionFind5
     }
 }
 
-$n = 100000;
-$unionFind = new UnionFind5($n);
-//$unionFind->printData();
-
+$n = 450000;
 $common = new common();
-$timeSta = $common->getMillisecond();
-
-srand(time(0));
-for( $i = 0 ; $i < $n ; $i ++ ){
-    $a = rand()% $n;
-    $b = rand() % $n;
-    $unionFind->unionElements($a, $b);
-}
-for($i = 0 ; $i < $n ; $i ++ ){
-    $a = rand() % $n;
-    $b = rand() % $n;
-    $unionFind->isConnected($a, $b);
-}
-
-
-//$unionFind->unionElements(1,2);
-echo  $common->timeDiff($timeSta);
-//$unionFind->printData();
-
-//$unionFind->find(1);
+$common->testUnion('UnionFind5', $n);

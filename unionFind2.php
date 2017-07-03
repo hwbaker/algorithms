@@ -13,6 +13,7 @@
 /**
  * Class unionFind2 并查集的另外一种实现方式
  */
+require ("common.php");
 class unionFind2
 {
     private $parent = array();
@@ -94,8 +95,12 @@ class unionFind2
 
 }
 
-$unionFind = new UnionFind2(10);
-$unionFind->printData();
-$unionFind->unionElements(1,2);
-$unionFind->printData();
+$n = 100000;
+$common = new common();
+$common->testUnion('UnionFind2', $n);
+
+//$unionFind = new UnionFind2(10);
+//$unionFind->printData();
+//$unionFind->unionElements(1,2);
+//$unionFind->printData();
 //var_dump($unionFind->isConnected(1,0));
