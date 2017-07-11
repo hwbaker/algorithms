@@ -41,7 +41,7 @@ class common
      */
     function getMillisecond() {
         list($microSeconds, $seconds) = explode(' ', microtime());//微秒 秒
-        return (float)(floatval($microSeconds)+floatval($seconds))*1000;
+        return (float)(floatval($microSeconds/1000)+floatval($seconds));
     }
 
     /**
@@ -53,7 +53,8 @@ class common
     {
         $timeSta = $timeSta ? $timeSta : self::getMillisecond();
         $timeEnd = $timeEnd ? $timeEnd : self::getMillisecond();
-        echo $timeEnd - $timeSta . "微秒...\r\n";
+        $time = $timeEnd - $timeSta;
+        echo number_format($time,20,'.','') . " S...\r\n";
     }
 
     /**

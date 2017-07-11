@@ -38,7 +38,7 @@ class MaxHeap
 
     public function printData()
     {
-        print_r($this->data);
+        echo 'data   :'.implode(' ',$this->data)."\r\n";
     }
 
     /**
@@ -170,19 +170,17 @@ class MaxHeap
 }
 
 $maxHeap = new MaxHeap();
-//$maxHeap->insert(2);
-//$maxHeap->insert(20);
-//$maxHeap->insert(22);
-//$maxHeap->insert(5);
-//$maxHeap->printData();
-
-$arr = array(44, 1, 10, 113, 555, 7);
-$arrResult = $maxHeap->maxHeapSort1($arr);
-print_r($arrResult);
+$arr = array(15,17,19,13,22,16,28,30,41,62); // 15,17,19,13,22,16,28,30,41,62
+echo implode(' ', $arr) . "\r\n";
+foreach ($arr as $k=>$v){
+    $maxHeap->insert($v);
+}
+//$arrResult = $maxHeap->maxHeapSort1($arr);
+//print_r($arrResult);
 
 //$arrResult = $maxHeap->maxHeapSort2($arr);
 //print_r($arrResult);
 
 //$maxHeap->heapify($arr);
-//$maxHeap->printData();
+$maxHeap->printData();
 
