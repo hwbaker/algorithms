@@ -68,7 +68,7 @@ class MaxHeap
     }
 
     /**
-     * @desc 堆顶元素出堆
+     * @desc 堆顶最大元素出堆
      */
     public function extractMax()
     {
